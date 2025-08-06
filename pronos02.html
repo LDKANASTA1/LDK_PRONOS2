@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LDK PRONOS - Inscription</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            color: white;
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 30px;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #0073e6, 0 0 20px #0073e6;
+            }
+            to {
+                text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #0073e6, 0 0 40px #0073e6;
+            }
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .container {
+            background-color: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+            width: 100%;
+            max-width: 500px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            font-size: 16px;
+        }
+
+        input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .profile-picture-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .profile-picture {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid white;
+            background-color: rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+
+        .profile-picture img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-picture-placeholder {
+            font-size: 40px;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .btn {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .btn:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+        }
+
+        .btn-telegram {
+            background-color: #0088cc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-telegram:hover {
+            background-color: #006699;
+        }
+
+        .telegram-icon {
+            width: 20px;
+            height: 20px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .verification-container, .sharing-container, .success-container {
+            text-align: center;
+        }
+
+        .verification-code {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .verification-code input {
+            width: 40px;
+            height: 40px;
+            text-align: center;
+            font-size: 18px;
+        }
+
+        .counter {
+            margin: 15px 0;
+            font-size: 18px;
+        }
+
+        .link-container {
+            background-color: rgba(255, 255, 255, 0.2);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            word-break: break-all;
+        }
+
+        .link {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .link:hover {
+            text-decoration: underline;
+        }
+
+        .error {
+            color: #ff6b6b;
+            margin-top: 5px;
+            font-size: 14px;
+        }
+
+        .success-message {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            color: #4caf50;
+        }
+    </style>
+</head>
+<body>
+    <div class="logo">
+        <h1>LDK PRONOS</h1>
+        <p>Votre plateforme de pronostics</p>
+    </div>
+
+    <div class="container" id="registration-container">
+        <div class="profile-picture-container">
+            <div class="profile-picture" id="profile-picture">
+                <div class="profile-picture-placeholder">👤</div>
+            </div>
+            <input type="file" id="profile-picture-input" accept="image/*" style="display: none;">
+            <button class="btn" onclick="document.getElementById('profile-picture-input').click()">Ajouter une photo</button>
+        </div>
+
+        <div class="form-group">
+            <label for="name">Nom</label>
+            <input type="text" id="name" placeholder="Entrez votre nom">
+            <div class="error" id="name-error"></div>
+        </div>
+
+        <div class="form-group">
+            <label for="lastname">Post-nom</label>
+            <input type="text" id="lastname" placeholder="Entrez votre post-nom">
+            <div class="error" id="lastname-error"></div>
+        </div>
+
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" placeholder="Entrez votre email">
+            <div class="error" id="email-error"></div>
+        </div>
+
+        <button class="btn" id="register-btn">Créer un compte</button>
+    </div>
+
+    <div class="container hidden" id="verification-container">
+        <div class="verification-container">
+            <h2>Vérification de l'email</h2>
+            <p>Nous avons envoyé un code de vérification à <span id="user-email"></span></p>
+            
+            <div class="verification-code">
+                <input type="text" maxlength="1" data-index="0">
+                <input type="text" maxlength="1" data-index="1">
+                <input type="text" maxlength="1" data-index="2">
+                <input type="text" maxlength="1" data-index="3">
+                <input type="text" maxlength="1" data-index="4">
+                <input type="text" maxlength="1" data-index="5">
+            </div>
+
+            <div class="error" id="verification-error"></div>
+
+            <p>Vous n'avez pas reçu le code? <a href="#" id="resend-code">Renvoyer le code</a></p>
+            <p>Ou utilisez le code universel: <strong>123456</strong></p>
+
+            <button class="btn" id="verify-btn">Vérifier</button>
+        </div>
+    </div>
+
+    <div class="container hidden" id="sharing-container">
+        <div class="sharing-container">
+            <h2>Partagez notre lien</h2>
+            <p>Pour accéder à l'application, vous devez partager notre lien Telegram avec 15 personnes</p>
+            
+            <div class="link-container">
+                <p id="telegram-link">https://t.me/Ldk_Anasta1</p>
+            </div>
+
+            <div class="counter">
+                Personnes invitées: <span id="invite-count">0</span>/15
+            </div>
+
+            <button class="btn btn-telegram" id="telegram-btn">
+                <svg class="telegram-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white">
+                    <path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm5.894 8.221l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.446 1.394c-.14.18-.357.295-.6.295-.002 0-.003 0-.005 0l.213-3.054 5.56-5.022c.24-.213-.054-.334-.373-.121l-6.869 4.326-2.96-.924c-.64-.203-.658-.64.135-.954l11.566-4.458c.538-.196 1.006.128.832.941z"/>
+                </svg>
+                Partager sur Telegram
+            </button>
+
+            <p>Après avoir partagé, revenez ici pour vérifier</p>
+            <button class="btn" id="check-invites-btn">J'ai partagé</button>
+        </div>
+    </div>
+
+    <div class="container hidden" id="success-container">
+        <div class="success-container">
+            <h2>Félicitations!</h2>
+            <div class="success-message">Vous avez complété toutes les étapes avec succès!</div>
+            <p>Rejoignez maintenant notre canal Telegram pour recevoir vos coupons gratuits:</p>
+            
+            <div class="link-container">
+                <a href="https://t.me/Ldk_Anasta1" class="link" target="_blank">https://t.me/Ldk_Anasta1</a>
+            </div>
+
+            <button class="btn btn-telegram" id="join-telegram-btn">
+                <svg class="telegram-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white">
+                    <path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm5.894 8.221l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.446 1.394c-.14.18-.357.295-.6.295-.002 0-.003 0-.005 0l.213-3.054 5.56-5.022c.24-.213-.054-.334-.373-.121l-6.869 4.326-2.96-.924c-.64-.203-.658-.64.135-.954l11.566-4.458c.538-.196 1.006.128.832.941z"/>
+                </svg>
+                Rejoindre le canal
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Variables globales
+        let userData = {};
+        let verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
+        let inviteCount = 0;
+
+        // DOM Elements
+        const registrationContainer = document.getElementById('registration-container');
+        const verificationContainer = document.getElementById('verification-container');
+        const sharingContainer = document.getElementById('sharing-container');
+        const successContainer = document.getElementById('success-container');
+        
+        const profilePicture = document.getElementById('profile-picture');
+        const profilePictureInput = document.getElementById('profile-picture-input');
+        
+        const nameInput = document.getElementById('name');
+        const lastnameInput = document.getElementById('lastname');
+        const emailInput = document.getElementById('email');
+        
+        const nameError = document.getElementById('name-error');
+        const lastnameError = document.getElementById('lastname-error');
+        const emailError = document.getElementById('email-error');
+        
+        const registerBtn = document.getElementById('register-btn');
+        const verifyBtn = document.getElementById('verify-btn');
+        const resendCodeLink = document.getElementById('resend-code');
+        const telegramBtn = document.getElementById('telegram-btn');
+        const checkInvitesBtn = document.getElementById('check-invites-btn');
+        const joinTelegramBtn = document.getElementById('join-telegram-btn');
+        
+        const userEmailSpan = document.getElementById('user-email');
+        const inviteCountSpan = document.getElementById('invite-count');
+        const verificationError = document.getElementById('verification-error');
+        
+        const codeInputs = document.querySelectorAll('.verification-code input');
+
+        // Event Listeners
+        profilePictureInput.addEventListener('change', handleProfilePictureUpload);
+        registerBtn.addEventListener('click', handleRegistration);
+        verifyBtn.addEventListener('click', handleVerification);
+        resendCodeLink.addEventListener('click', resendVerificationCode);
+        telegramBtn.addEventListener('click', shareOnTelegram);
+        checkInvitesBtn.addEventListener('click', checkInvites);
+        joinTelegramBtn.addEventListener('click', joinTelegramChannel);
+
+        // Setup verification code inputs
+        codeInputs.forEach(input => {
+            input.addEventListener('input', () => {
+                const nextIndex = parseInt(input.dataset.index) + 1;
+                if (input.value && nextIndex < codeInputs.length) {
+                    codeInputs[nextIndex].focus();
+                }
+            });
+            
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Backspace' && !input.value) {
+                    const prevIndex = parseInt(input.dataset.index) - 1;
+                    if (prevIndex >= 0) {
+                        codeInputs[prevIndex].focus();
+                    }
+                }
+            });
+        });
+
+        // Functions
+        function handleProfilePictureUpload(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    profilePicture.innerHTML = `<img src="${event.target.result}" alt="Profile Picture">`;
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function validateEmail(email) {
+            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return re.test(email);
+        }
+
+        function handleRegistration() {
+            // Reset errors
+            nameError.textContent = '';
+            lastnameError.textContent = '';
+            emailError.textContent = '';
+            
+            // Get values
+            const name = nameInput.value.trim();
+            const lastname = lastnameInput.value.trim();
+            const email = emailInput.value.trim();
+            
+            // Validate
+            let isValid = true;
+            
+            if (!name) {
+                nameError.textContent = 'Le nom est requis';
+                isValid = false;
+            }
+            
+            if (!lastname) {
+                lastnameError.textContent = 'Le post-nom est requis';
+                isValid = false;
+            }
+            
+            if (!email) {
+                emailError.textContent = 'L\'email est requis';
+                isValid = false;
+            } else if (!validateEmail(email)) {
+                emailError.textContent = 'Veuillez entrer un email valide';
+                isValid = false;
+            }
+            
+            if (isValid) {
+                userData = {
+                    name,
+                    lastname,
+                    email,
+                    profilePicture: profilePicture.querySelector('img')?.src || ''
+                };
+                
+                // Show verification container
+                registrationContainer.classList.add('hidden');
+                verificationContainer.classList.remove('hidden');
+                userEmailSpan.textContent = email;
+                
+                // In a real app, you would send the email here
+                console.log(`Verification code sent to ${email}: ${verificationCode}`);
+            }
+        }
+
+        function handleVerification() {
+            const enteredCode = Array.from(codeInputs).map(input => input.value).join('');
+            
+            if (enteredCode === verificationCode || enteredCode === '123456') {
+                // Code is valid, move to sharing step
+                verificationContainer.classList.add('hidden');
+                sharingContainer.classList.remove('hidden');
+            } else {
+                verificationError.textContent = 'Code incorrect. Veuillez réessayer.';
+            }
+        }
+
+        function resendVerificationCode(e) {
+            e.preventDefault();
+            verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
+            console.log(`New verification code sent to ${userData.email}: ${verificationCode}`);
+            verificationError.textContent = 'Nouveau code envoyé!';
+            
+            // Clear inputs
+            codeInputs.forEach(input => {
+                input.value = '';
+            });
+            codeInputs[0].focus();
+        }
+
+        function shareOnTelegram() {
+            const text = `Rejoignez LDK PRONOS pour des pronostics exclusifs! ${document.getElementById('telegram-link').textContent}`;
+            const url = `https://t.me/share/url?url=${encodeURIComponent(document.getElementById('telegram-link').textContent)}&text=${encodeURIComponent(text)}`;
+            window.open(url, '_blank');
+        }
+
+        function checkInvites() {
+            // In a real app, you would check if the user actually shared the link
+            // For this demo, we'll just simulate it
+            inviteCount = Math.min(inviteCount + Math.floor(Math.random() * 5) + 1, 15);
+            inviteCountSpan.textContent = inviteCount;
+            
+            if (inviteCount >= 15) {
+                // User has shared enough, show success
+                sharingContainer.classList.add('hidden');
+                successContainer.classList.remove('hidden');
+            }
+        }
+
+        function joinTelegramChannel() {
+            window.open('https://t.me/Ldk_Anasta1', '_blank');
+        }
+    </script>
+</body>
+</html>
